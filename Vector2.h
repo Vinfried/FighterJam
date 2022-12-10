@@ -6,34 +6,47 @@ public:
 	Vector2(float x, float y);
 	~Vector2();
 
-	//Operators that will allow us to perporm math functions on the vector
-	Vector2 operator+(const Vector2 &otherVector);
-	Vector2 operator+=(const Vector2 &otherVector);
+	// operators that will allow us to perform math functions on the vector 
 
-	Vector2 operator-(const Vector2 &otherVector);
-	Vector2 operator-=(const Vector2 &otherVector);
+	Vector2 operator+(const Vector2 &OtherVector);
+	Vector2 operator+=(const Vector2& OtherVector);
 
-	//vector multiplication not necessary. Instead multiply by a single number (scalar)
-	Vector2 operator*(const float &scalar);
-	Vector2 operator*=(const float &scalar);
 
-	Vector2 operator/(const float &scalar);
-	Vector2 operator/=(const float &scalar);
+	Vector2 operator-(const Vector2& OtherVector);
+	Vector2 operator-=(const Vector2& OtherVector);
 
-	bool operator==(const Vector2 &otherVector);
-	bool operator!=(const Vector2 &otherVector);
 
-	//what is the length of both x and y
-	float length();
+	Vector2 operator*(const float& Scalar);
+	Vector2 operator*=(const float& Scalar);
 
-	void normalise();
-	Vector2 normalised();
 
-	//this is a quick function to return a 0 vector
-	Vector2 zero();
+	Vector2 operator/(const float& Scalar);
+	Vector2 operator/=(const float& Scalar);
 
-	//Coordinates stored in the vector
+
+	// bool operators 
+	bool operator == (const Vector2& OtherVector);
+	bool operator != (const Vector2& OtherVector);
+
+	// what is the length of x and y vectors 
+	float Length();
+
+
+	void Normalise();
+	Vector2 Normalised();
+
+
+	Vector2 Zero();
+
+
+	// coordinates stored in the vector 
+
 	float x;
 	float y;
+
+
+
+
+
 };
 

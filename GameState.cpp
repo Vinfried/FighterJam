@@ -2,63 +2,73 @@
 
 GameState::GameState()
 {
-	stateID = 0;
-	defaultBackgroundColour = { 15, 15, 15, 255 };
+	StateID = 0;
+	DBColour = {15,15,15,225};
+	bShouldDelete = false;
 }
 
 GameState::~GameState()
 {
-	//deallocate all of the game objects in the state
-	for (vector<GameObject*>::iterator go = gameObjectStack.begin(); go < gameObjectStack.end(); go++) {
-		delete* go;
+	for (vector<GameObject*>::iterator  GO = GameObjectStack.begin(); GO < GameObjectStack.end(); GO++)
+	{
+		delete* GO;
 	}
-
-	//clear the vector
-	vector<GameObject*>().swap(gameObjectStack);
+	// it will clear the vector 
+	vector<GameObject*>().swap(GameObjectStack);
 }
 
-void GameState::update(float deltaTime)
+void GameState::Update(float DeltaTime)
 {
-	//loop through all of the gameobjects and run their update
-	for (vector<GameObject*>::iterator go = gameObjectStack.begin(); go < gameObjectStack.end(); go++) {
-		(*go)->updateGameObject(deltaTime, gameObjectStack);
-	}
-}
-
-void GameState::draw(SDL_Renderer* renderer)
-{
-	//Draw background colour as blue
-	SDL_SetRenderDrawColor(renderer, defaultBackgroundColour.r, defaultBackgroundColour.g, defaultBackgroundColour.b, defaultBackgroundColour.a);
-	SDL_RenderClear(renderer);
-
-	//loop through all of the gameobjects and run their draw
-	for (vector<GameObject*>::iterator go = gameObjectStack.begin(); go < gameObjectStack.end(); go++) {
-		(*go)->draw(renderer);
+	for (vector<GameObject*>::iterator GO = GameObjectStack.begin(); GO < GameObjectStack.end(); GO++)
+	{
+		(*GO)->UpDateGameObject(DeltaTime, GameObjectStack);
 	}
 }
 
-void GameState::processInput(Input* userInput)
+void GameState::Draw(SDL_Renderer* Renderer)
 {
-	//loop through all of the gameobjects and run their processInput
-	for (vector<GameObject*>::iterator go = gameObjectStack.begin(); go < gameObjectStack.end(); go++) {
-		(*go)->processInput(userInput);
+	SDL_SetRenderDrawColor(Renderer,DBColour.r, DBColour.g, DBColour.b, DBColour.a);
+
+	SDL_RenderClear(Renderer);
+
+	for (vector<GameObject*>::iterator GO = GameObjectStack.begin(); GO < GameObjectStack.end(); GO++)
+	{
+		(*GO)->Draw(Renderer);
+	}
+
+}
+
+void GameState::ProcessInput(Input* UserInput)
+{
+	for (vector<GameObject*>::iterator GO = GameObjectStack.begin(); GO < GameObjectStack.end(); GO++)
+	{
+		(*GO)->ProcessInput(UserInput);
 	}
 }
 
-void GameState::handleGarbage()
+void GameState::HandleGarbage()
 {
-	//loop through all the gameObjects and handle their garbage
-	for (vector<GameObject*>::iterator go = gameObjectStack.begin(); go < gameObjectStack.end();) {
-		//check if they're marked for delete
-		if ((*go)->shouldDelete()) {
-			//deallocate it from memory
-			delete* go;
-
-			go = gameObjectStack.erase(go);
+	for (vector<GameObject*>::iterator GO = GameObjectStack.begin(); GO < GameObjectStack.end();)
+	{
+		if ((*GO)->ShouldDelete())
+		{
+			delete* GO;
+			GO = GameObjectStack.erase(GO);
 		}
-		else {
-			//increment the iterator if we didn't delete anything
-			go++;
+		else
+		{
+			GO++;
 		}
-	}
+
+	} 
+}
+
+bool GameState::ShouldDelete()
+{
+	return bShouldDelete;
+}
+
+void GameState::DestroyGameState()
+{
+	bShouldDelete = true;
 }

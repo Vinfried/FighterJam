@@ -1,28 +1,33 @@
 #include "RectangleObject.h"
 
-RectangleObject::RectangleObject(float width, float height, Vector2 position, SDL_Colour colour, bool bFilled)
+RectangleObject::RectangleObject(float Width, float Height, Vector2 Position, SDL_Color Colour, bool bFilled)
 {
-	this->width = width;
-	this->height = height;
-	this->position = position;
-	this->colour = colour;
+
+	this->Width = Width;
+	this->Height = Height;
+	this->Position = Position;
+	this->Colour = Colour;
 	this->bFilled = bFilled;
 
 }
 
-void RectangleObject::draw(SDL_Renderer* renderer)
+void RectangleObject::Draw(SDL_Renderer* Renderer)
 {
-	SDL_FRect rectangle = {width, height, position.x, position.y};
 
-	SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+	SDL_FRect Rectangle = {Width, Height, Position.x, Position.y};
 
-	//if bFilled == false
-	if (!bFilled) {
-		//draw outlined rectangle
-		SDL_RenderDrawRectF(renderer, &rectangle);
+
+	SDL_SetRenderDrawColor(Renderer, Colour.r, Colour.g, Colour.b, Colour.a);
+
+
+	if (!bFilled)
+	{
+		// draw rectangle outline 
+		SDL_RenderDrawRectF(Renderer, &Rectangle);
 	}
-	else {
-		//draw rectangle with filled colour
-		SDL_RenderFillRectF(renderer, &rectangle);
+	else
+	{
+		// draw rectangle with filled color
+		SDL_RenderFillRectF(Renderer, &Rectangle);
 	}
 }

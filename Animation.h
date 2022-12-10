@@ -1,5 +1,4 @@
 #pragma once
-
 #include "SDL.h"
 #include "Texture.h"
 
@@ -9,41 +8,41 @@ public:
 
 	Animation();
 
-	Animation(Texture* inSpriteSheet, int inNumberOffFrames = 1, 
-		float inFrameDuration = 0.1f, int inStartFrame = 0, int inEndFrame = 0 );
+	Animation(Texture* intSpriteSheet, int InNumberofFrames = 1, float InFrameDuration = 0.1f,
+		int InStartFrame = 0, int InEndFrame = 0);
 
 	~Animation();
 
-	//update the animation on each frame
-	void update(float deltaTime);
+	//it will update animation on each frame 
+	void Update(float DeltaTime);
 
-	//draw the texture to the screen at the positions
-	void draw(SDL_Renderer* renderer, Vector2 pos, int scale = 1, bool flip = false);
+	// it will draw the animation on screen 
+	void Draw(SDL_Renderer* Renderer, Vector2 Pos, int Scale = 1);
 
-	int getFrameWidth() { return frameWidth; };
-
-	int getFrameHeight() { return frameHeight; };
+	int GetFrameWidth()
+	{
+		return FrameWidth;
+	};
+	int GetFrameHeight()
+	{
+		return FrameHeight;
+	};
 
 private:
+	// start and end Frame of the animation
+	unsigned int StartFrame;
+	unsigned int EndFrame;
 
-	//start and end frame
-	unsigned int startFrame;
-	unsigned int endFrame;
+	// width and height of frame  
+	unsigned int FrameWidth;
+	unsigned int FrameHeight;
 
-	//frame width and height
-	unsigned int frameWidth;
-	unsigned int frameHeight;
+	Texture* SpriteSheet;
 
-	//texture image for the sprite
-	Texture* spriteSheet;
+	float FrameTimer;
 
-	//timer since the last sprite update
-	float frameTimer;
+	float FrameDuration;
 
-	//how long each frame should hold for
-	float frameDuration;
-
-	//what frame are we currently showing
-	unsigned int currentFrame;
+	unsigned  int CurrentFrame;
 };
 

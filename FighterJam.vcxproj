@@ -134,15 +134,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="EndGoalObject.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="MSGameOver.cpp" />
     <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayState.cpp" />
@@ -154,15 +157,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Collectible.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="EndGoalObject.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="MSGameOver.h" />
     <ClInclude Include="Orbs.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayState.h" />

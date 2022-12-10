@@ -7,25 +7,33 @@ class Character :
     public GameObject
 {
 public:
-    Character(Texture* characterTexture, Vector2 pos, int numberOfFrames = 1);
+
+    Character(Texture* CharacterTexture,Vector2 Pos, int NumberofFrames = 1);
     ~Character() {}
 
-    void draw(SDL_Renderer* renderer) override;
-    virtual void update(float deltaTime) override;
-    virtual void processInput(Input *userInput) override {}
+   void Draw(SDL_Renderer* Renderer)override;
+   virtual void Update(float DeltaTime)override;
+   virtual void ProcessInput(Input* UserInput)override {}
+
+   void AddForce(float Force, Vector2 Direction);
+
 
 protected:
-    float maxSpeed;
+    float MaxSpeed;
 
-    void setMovementAxis(Vector2 axis);
-    Vector2 getMovementAxis();
+    void SetMovementAxis(Vector2 Axis);
+    Vector2 GetMovementAxis();
+    float Drag;
 
-private:
 
-    //velocity is the true representation of speed, this will gave a x and y value
-    Vector2 velocity;
-    //this is going to detect input and move our character based on it's direction
-    //make sure the number is normally between 0 and 1
-    Vector2 movementAxis;
+private :
+
+ 
+    Vector2 Velocity;
+
+    Vector2 MovementAxis;
+
+    Vector2 Acceleration;
+
 };
 

@@ -1,23 +1,35 @@
 #pragma once
 #include "GameState.h"
 #include "Text.h"
+#include "Texture.h"
 #include "SDL_mixer.h"
 
-class MenuState :
-    public GameState
+
+class MenuState :   public GameState
 {
 public:
-    MenuState();
-    virtual void update(float deltaTime) override { GameState::update(deltaTime); }
-    virtual void draw(SDL_Renderer* renderer) override;
-    virtual void processInput(Input* userInput) override { GameState::processInput(userInput); }
 
-    virtual bool onEnter(SDL_Renderer* renderer, SDL_Window* window) override;
-    virtual bool onExit() override;
+	MenuState();
+
+	virtual void Update(float DeltaTime)  override
+	{
+		GameState::Update(DeltaTime);
+	}
+	virtual void Draw(SDL_Renderer* Renderer) override;
+
+	virtual void ProcessInput(Input* UserInput) override;
+	 
+
+	virtual bool OnEnter(SDL_Renderer* Renderer, SDL_Window* Window) override;
+
+
+	virtual bool OnExit() override;
 
 protected:
-    Text* menuTitle;
-    Mix_Chunk* sfx_enter;
+
+	Text* MenuTitle;
+	Mix_Chunk* SFX_Enter;
+
 
 };
 

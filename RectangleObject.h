@@ -1,20 +1,25 @@
 #pragma once
 #include "GameObject.h"
-class RectangleObject :
-    public GameObject
+class RectangleObject :  public GameObject
 {
-public:
-    RectangleObject(float width, float height, Vector2 position, SDL_Colour colour, bool bFilled);
 
-    void draw(SDL_Renderer* renderer) override;
+public:
+
+	RectangleObject(float Width, float Height, Vector2 Position, SDL_Color Colour, bool bFilled = false);
+
+	void Draw(SDL_Renderer* Renderer)override;
 
 protected:
-    float width;
-    float height;
-    //screen position
-    Vector2 position;
-    //this will decide if the rectangle is filled with colour
-    bool bFilled;
-    SDL_Colour colour;
+
+	float Width;
+	float Height;
+
+	Vector2 Position;
+	bool bFilled;
+	SDL_Color Colour;
+
+
+
+
 };
 

@@ -3,27 +3,37 @@
 #include "Player.h"
 #include "Text.h"
 #include "SDL_mixer.h"
+#include "Texture.h"
 
-class PlayState :
-    public GameState
+class PlayState : public GameState
 {
-public:
-    PlayState();
-    virtual void update(float deltaTime) override;
-    virtual void draw(SDL_Renderer* renderer) override;
-    virtual void processInput(Input* userInput) override { GameState::processInput(userInput); }
 
-    virtual bool onEnter(SDL_Renderer* renderer, SDL_Window* window) override;
-    virtual bool onExit() override;
+public:
+	PlayState();
+
+	virtual void Update(float DeltaTime)  override;
+	 
+	virtual void Draw(SDL_Renderer* Renderer) override;
+	 
+	virtual void ProcessInput(Input* UserInput) override
+	{
+		GameState::ProcessInput(UserInput);
+	}
+
+	virtual bool OnEnter(SDL_Renderer* Renderer, SDL_Window* Window) override;
+
+
+	virtual bool OnExit() override;
 
 protected:
-    //store a pointer to the player game object
-    Player* pChar;
 
-    //store the text for the positon
-    Text* txt_pPosition;
+	Player* PChar;
 
-    //background music
-    Mix_Music* music_bg;
+	Text* TXT_PPosition;
+
+	Text* TXT_Score;
+
+	Mix_Music* Music_BG;
+
 };
 

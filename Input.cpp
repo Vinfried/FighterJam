@@ -1,13 +1,17 @@
 #include "Input.h"
 #include "SDL_syswm.h"
 #include "resource.h"
+#include "resource1.h"
 #include "Game.h"
+ 
+using namespace std;
 
-Input::Input(Game* myGame)
+Input::Input(Game* MyGame)
 {
-	keyboardState = nullptr;
-	this->myGame = myGame;
-	//allow SDL to detect menu input events
+	KeyBoardState = nullptr;
+
+	this->MyGame = MyGame;
+
 	SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
 }
 
@@ -15,89 +19,111 @@ Input::~Input()
 {
 }
 
-void Input::updateInput(bool& bIsGameOver, vector<SDL_Window*> sdlWindows)
+void Input::UpdateInput(bool& bIsGameOver, vector<SDL_Window*> SdlWindows)
 {
-	SDL_Event aEvent;
-	while (SDL_PollEvent(&aEvent)) {
+	SDL_Event Event;
+	while (SDL_PollEvent(&Event))
+	{
 
-		//detect the type of input used
-		switch (aEvent.type) {
-		
-		case SDL_KEYDOWN:
-			keyboardState = SDL_GetKeyboardState(NULL);
+		switch (Event.type)
+		{
+		case  SDL_KEYDOWN:
+		 
+			KeyBoardState = SDL_GetKeyboardState(NULL);
 			break;
+		case  SDL_KEYUP:
 
-		case SDL_KEYUP:
-			keyboardState = SDL_GetKeyboardState(NULL);
+			KeyBoardState = SDL_GetKeyboardState(NULL);
 			break;
-
-		case SDL_SYSWMEVENT:
-			handleMenuEvents(&aEvent, sdlWindows, bIsGameOver);
+		case  SDL_SYSWMEVENT:
+			HandleMenuEvents(&Event, SdlWindows, bIsGameOver );
 			break;
-
 		default:
 			break;
-
-			
-
 		}
 
-		//when you hit the cross button on the app, close the game
-		if (aEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
-			//if the main window close was pressed - end event
-			if (aEvent.window.windowID == SDL_GetWindowID(sdlWindows[0])) {
+
+
+
+
+		// this will close the game if we hit cross 
+
+		if (Event.window.event ==  SDL_WINDOWEVENT_CLOSE )
+		{
+			if (Event.window.windowID == SDL_GetWindowID(SdlWindows[0]))
+			{
 				bIsGameOver = true;
 			}
-			else {
-				//if the secondary window close was pressed then hide the secondary window
-				SDL_HideWindow(sdlWindows[1]);
+			else
+			{
+				SDL_HideWindow(SdlWindows[1]);
 			}
-		}
+			
+ 		}
+
 	}
+
+
 }
 
-bool Input::isKeyDown(SDL_Scancode key)
+bool Input::IsKeyDown(SDL_Scancode Key)
 {
-	if (keyboardState != nullptr && keyboardState[key] == true) {
+
+	if (KeyBoardState != nullptr && KeyBoardState [Key] == true)
+	{
 		return true;
 	}
 
 	return false;
 }
 
-bool Input::isKeyUp(SDL_Scancode key)
+bool Input::IsKeyUp(SDL_Scancode Key)
 {
-	if (keyboardState != nullptr && keyboardState[key] == true) {
+	if (KeyBoardState != nullptr && KeyBoardState[Key] == true)
+	{
 		return false;
 	}
+
 
 	return true;
 }
 
-void Input::handleMenuEvents(SDL_Event* aEvent, vector<SDL_Window*> sdlWindows, bool &bIsGameOver)
+void Input::HandleMenuEvents(SDL_Event* Event, vector<SDL_Window*> SdlWindows, bool& bIsGameOver)
 {
-	switch (aEvent->syswm.msg->msg.win.wParam) {
-	case ID_FILE_NEWWINDOW: //if we push a new window button
-		SDL_ShowWindow(sdlWindows[1]); //show a secondary window
+	switch (Event->syswm.msg->msg.win.wParam)
+	{
+
+	case  ID_FILE_NEWWINDOW:  // case 01 
+	
+		SDL_ShowWindow(SdlWindows[1]);
 		break;
 
-	case ID_FILE_EXITGAME: //if we push the exit game button
-		bIsGameOver = true; //exit game
+	case  ID_FILE_EXIT:        // case 02 
+
+		bIsGameOver = true;
 		break;
 
-	case ID_HELP_ABOUTBGENGINE: //if we push about the bgengine menu buttom
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "About the BGEngine", "BGEngine v8 is an SDL2 based game engine.", sdlWindows[0]); // create a message box that can be closed when pressing the ok button
+	case ID_HELP_BGEGAMEENGINE:
+
+		   
+		SDL_ShowSimpleMessageBox
+		   (SDL_MESSAGEBOX_INFORMATION, 
+			" About BGE Engine " , 
+			" BGE Engine is v0.1 version is an SDL2 based game engine. ",
+			  SdlWindows[0]);
 		break;
 
-	case ID_SHAPES_RECTANGLE: //if shapes > rectangle menu is pressed
-		myGame->addRandomRectangle(false); //spawn an empty rectangle
+	case ID_SHAPES_RECTANGLE:
+		MyGame->AddRandomRactangle();
 		break;
-		
-	case ID_SHAPES_RECTANGLEFUFILLED: //if shapes > rectangle(filled) menu is pressed
-		myGame->addRandomRectangle(true); //spawn a filled rectangle
+
+	case ID_SHAPES_RECTANGLE40004:
+		MyGame->AddRandomRactangle(true);
 		break;
 
 	default:
-		break;
+
+			break;
 	}
+
 }

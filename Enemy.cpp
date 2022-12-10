@@ -1,25 +1,22 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Texture* characterTexture, Vector2 pos, int numberOfFrames)
-:Character::Character(characterTexture, pos, numberOfFrames)
+Enemy::Enemy(Texture* CharacterTexture, Vector2 Pos, int NumberofFrames)
+	:Character::Character(CharacterTexture, Pos, NumberofFrames)
 {
-	maxSpeed = 25.0f;
-	tag = "Enemy";
+	MaxSpeed = 350.0f;
+	Tag = "Enemy";
 }
 
 Enemy::~Enemy()
 {
 }
 
-void Enemy::update(float deltaTime)
+void Enemy::Update(float DeltaTime)
 {
-	Character::update(deltaTime);
-
-	setMovementAxis(Vector2(1.0f, 0.0f));
+	Character::Update(DeltaTime);
+//	Position.x += 200 * DeltaTime;
+	float Speed = 1000.0f;
+    AddForce(Speed , Vector2(1.0f, 0.0f));
 }
 
-void Enemy::processInput(Input* userInput)
-{
-}
-
-
+ 

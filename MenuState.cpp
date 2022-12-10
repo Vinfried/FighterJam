@@ -1,77 +1,97 @@
 #include "MenuState.h"
+#include "Game.h"
+#include "PlayState.h"
+
 
 MenuState::MenuState()
 {
-	defaultBackgroundColour = { 0, 150, 255, 255 };
-	menuTitle = nullptr;
-	sfx_enter = nullptr;
+    DBColour = {102, 255, 51, 0};
+    MenuTitle = nullptr;
+    SFX_Enter = nullptr;
+
 }
 
-void MenuState::draw(SDL_Renderer* renderer)
+void MenuState::Draw(SDL_Renderer* Renderer)
 {
-	GameState::draw(renderer);
-
-	if (menuTitle != nullptr) {
-		//draw menu title if exists
-		menuTitle->draw(renderer);
-	}
+    GameState::Draw(Renderer);
+    if(MenuTitle != nullptr)
+    {
+        MenuTitle->Draw(Renderer);
+    }
 }
 
-bool MenuState::onEnter(SDL_Renderer* renderer, SDL_Window* window)
+void MenuState::ProcessInput(Input* UserInput)
 {
-	SDL_Log("Entered Menu State...");
+    GameState::ProcessInput(UserInput);
 
-	//define a window width and height
-	int wWidth, wHeight = 0;
-	SDL_GetWindowSize(window, &wWidth, &wHeight);
+    if (UserInput->IsKeyDown(SDL_SCANCODE_SPACE))
+    {
+        PlayState* NewState = new PlayState();
+        Game::GetGameInstance()->ChangeGameState(NewState, 1);
+    }
 
-	//define the half width and height to get the center of the screen
-	int halfWindowWidth = SDL_max(wWidth, 1) / 2;
-	int halfWindowHeight = SDL_max(wHeight, 1) / 2;
-
-
-	//create the text as an object 
-	menuTitle = new Text();
-
-	//define a colour for the title
-	SDL_Colour titleColour = { 255, 255, 255, 255 };
-
-	//initialise the font
-	if (!menuTitle->initialiseFont(renderer, "Assets/VT323-Regular.ttf", 42, "Welcome to BGEngine The Game!", titleColour, Vector2(halfWindowWidth, halfWindowHeight))) {
-		delete menuTitle;
-		menuTitle = nullptr;
-	}
-	else {
-		//menuTitle->changeText("This is the new text...");
-		menuTitle->centerText(true);
-	}
-
-	//define the sound effect
-	sfx_enter = Mix_LoadWAV("Assets/EntryAudio.wav");
-
-	//play the sound effect
-	//@param 3 - loop amounts: -1 = indefinetely, 0 = no loops, 1 or higher = amount specified
-	if (sfx_enter != nullptr) {
-		Mix_PlayChannel(-1, sfx_enter, 0);
-	}
-
-	return true;
 }
 
-bool MenuState::onExit()
+bool MenuState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 {
-	SDL_Log("Exited Menu State...");
+    SDL_Log(" Menu State Entered...");
 
-	//deallocate menu title from memory;
-	if (menuTitle != nullptr) {
-		delete menuTitle;
-		menuTitle = nullptr;
-	}
+    int WWidth, WHeight = 0;
+    
+    SDL_GetWindowSize(Window, &WWidth, &WHeight);
+    
+    int HalfWidth = SDL_max(WWidth,1) /2;
+    int HalfHeight = SDL_max(WHeight, 1) /2;
 
-	if (sfx_enter != nullptr) {
-		Mix_FreeChunk(sfx_enter);
-		sfx_enter = nullptr;
-	}
 
-	return true;
+
+    
+    MenuTitle = new Text();
+    
+    SDL_Colour TitleColour = {153,51,255,255};
+
+    if (!MenuTitle->InitialiseFont(Renderer, "Assets/VT323-Regular.ttf", 55, " * Welcome to Fighter Jam * ", 
+        TitleColour, Vector2(HalfWidth, HalfHeight)))
+    {
+        delete MenuTitle;
+
+        MenuTitle = nullptr;
+    }
+
+    else
+    {
+         MenuTitle->CenterText(true);
+    }
+    // we have added a new music for our game 
+
+    SFX_Enter = Mix_LoadWAV("Assets/introMusic.wav");
+
+    if (SFX_Enter != nullptr)
+    {
+        Mix_PlayChannel(-1, SFX_Enter, 1);
+    }
+
+
+
+    return true;
+}
+
+bool MenuState::OnExit()
+{
+    SDL_Log(" Exited State Entered...");
+
+    if (MenuTitle != nullptr)
+    {
+        delete MenuTitle;
+        MenuTitle = nullptr;
+    }
+
+
+    if (SFX_Enter != nullptr)
+    {
+        Mix_FreeChunk(SFX_Enter);
+        SFX_Enter = nullptr;
+    }
+
+    return true;
 }

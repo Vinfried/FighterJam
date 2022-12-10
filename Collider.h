@@ -1,40 +1,45 @@
 #pragma once
 
-#include <vector>
-#include "SDL.h"
-#include "Vector2.h"
+#include<vector>
+#include"Vector2.h"
+#include"SDL.h"
 
 using namespace std;
 
-//when two classes both need data from each other it creates a chicken and egg paradox(resulting in an infinite loop)
-//we can use forward declaration to solve this paradox, instead of adding an #include
 class GameObject;
 
 class Collider
 {
-public:
-	Collider(GameObject* ownerObject, Vector2 position = Vector2().zero(), Vector2 halfDimentions = Vector2(1.0f, 1.0f), bool shouldDebug = true);
-	~Collider();
+	public:
+		Collider(GameObject* OwnerObject, Vector2 Position = Vector2().Zero(),Vector2 HalfDimensions = Vector2(1.0f,1.0f), bool ShouldDebug = true);
+		
+		~Collider();
 
-	//we need to detect if we are colliding with any of the other colliders in the game
-	void update(float deltaTime, vector<Collider*>& otherColliders);
-	void draw(SDL_Renderer* renderer);
+		void Update(float DeltaTime, vector <Collider*>& OtherColliders);
+		void Draw(SDL_Renderer* Renderer);
 
-	//set bounds for the collider
-	SDL_FRect colliderRect;
 
-	//get the other colliders that are overlapping this collider
-	vector<Collider*> getOverlappingColliders() const;
+		// set the bounds for the colllider 
 
-	//debug to draw the collider to the screen
-	bool bDebug;
+		SDL_FRect  ColliderRect;
 
-	GameObject* getOwner() const;
 
-protected:
-	//store all the colliders that are overlapping this collider
-	vector<Collider*> overlappedColliders;
+		vector <Collider*> GetOverlappingColliders() const;
 
-	GameObject* ownerObject;
+		// bDebug is used to draw draw the colliders on the screen 
+
+		bool bDebug;
+
+		GameObject* GetOwner() const;
+
+	 
+
+		protected:
+
+	   vector <Collider*> OverlappedColliders;
+
+	   GameObject* OwnerObject;
+
+	 
 };
 

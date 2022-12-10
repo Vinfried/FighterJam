@@ -1,18 +1,16 @@
-#include <iostream>
-#include "Game.h"
+
+#include<iostream>
+#include"Game.h"
 
 using namespace std;
 
-int main(int argc, char** argv) {
-	
-	//create the game class and allocate to memory
-	Game* newGame = new Game();
+int main(int argc , char** argv )
+{
+ 
 
-	//run the game
-	newGame->Run("BGEngine", 1200, 720, false);
-
-	//dealocate the game object
-	delete newGame;
+	 Game::GetGameInstance()->Run("Fighter Jam", 1280, 720, false);
+	 
+	 Game::DestroyGameInstance();
 
 	return 0;
 }

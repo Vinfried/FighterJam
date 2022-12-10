@@ -1,8 +1,7 @@
 #pragma once
-
-#include <string>
-#include"SDL.h"
-#include "Texture.h"
+#include<iostream>
+#include <SDL.h>
+#include"Texture.h"
 #include "Vector2.h"
 #include "Input.h"
 #include "Collider.h"
@@ -12,56 +11,52 @@ using namespace std;
 class GameObject
 {
 public:
-	GameObject();
-	~GameObject();
+		GameObject();
+		~GameObject();
+		// this will be tthe true update 
 
-	//this will be the true update that states should run
-	void updateGameObject(float deltaTime, vector<GameObject*>& gameObjectStack);
+		void UpDateGameObject(float DeltaTime, vector<GameObject*>GameObjectStack);
 
-	virtual void draw(SDL_Renderer* renderer);
-	virtual void processInput(Input* userInput) {}
+	virtual	void Draw(SDL_Renderer* Renderer);
+	virtual	void ProcessInput(Input* UserInput)   {}
 
-	//this is going to create a collision for the game object
-	void setCollision(Vector2 position, Vector2 halfDimentions, bool shouldDebug = true);
+	// this will create the collision for the game object 
 
-	//this will change the width and height of the collider
-	void setCollisionDimentions(Collider* collision, Vector2 halfDimentions);
+	void SetCollision(Vector2 Position = Vector2().Zero(), Vector2 HalfDimensions = Vector2(1.0f, 1.0f), bool ShouldDebug = true);
 
-	//this will move the position of the collision based on the objects center
-	void updateCollisionPositions();
-	void findObjectCenter();
+	void SetCollisionDimensions(Collider* Collision,Vector2 HalfDimensions);
 
-	//Get the collision publicly
-	vector<Collider*> getCollisions();
+	void UpdateCollisionPosition();
+	void FindObjectCenter();
 
-	//return if this should be deleted
-	bool shouldDelete() const;
-	
-	//set the game object to be destroyed
-	void  destroyGameObject();
+	vector<Collider*> GetCollisions();
 
-	//this will be an identifier for anything that needs to know specifics
-	string tag;
+	bool ShouldDelete() const;
 
-	//get hte game position
-	Vector2 getPosition() { return objectCenter; }
+	void DestroyGameObject();
+
+	string Tag;
+
+	Vector2 GetPosition() { return ObjectCenter;  }
 
 protected:
-	virtual void update(float deltaTime) {}
-	//position for the game object to display
-	Vector2 position;
-	//the objects texture
-	Texture* objectTexture;
-	//Collider
-	vector<Collider*> collisions;
-	//get the center of the object
-	Vector2 objectCenter;
-	//number of frames in the object texture
-	unsigned int numberOfFrames;
+
+	virtual	void Update(float DeltaTime) {}
+	// the position for the game object to display on the screen 
+
+	Vector2 Position;
+
+	Texture* ObjectTexture;
+
+	vector<Collider*> Collisions;
+
+	Vector2 ObjectCenter;
+
+	unsigned int NumberOfFrames;
 
 private:
 
-	//this will define whether or not the gameobject should be deleted
-	bool bShouldDelete;
+	bool bSouldDelete;
+
 };
 

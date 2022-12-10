@@ -1,16 +1,16 @@
 #include "Orbs.h"
 
-Orbs::Orbs(Texture* collectibleTexture, Vector2 pos, int numberOfFrames)
-:Collectible::Collectible(collectibleTexture, pos, numberOfFrames)
+Orbs::Orbs(Texture* CollectibleTexture, Vector2 Pos, int NumberOfFrames)
+:Collectible::Collectible(CollectibleTexture, Pos, NumberOfFrames)
 {
-	tag = "Orb";
+	Tag = "Orb";
 }
 
 Orbs::~Orbs()
 {
 }
 
-void Orbs::update(float deltaTime)
+void Orbs::Update(float DeltaTime)
 {
-	Collectible::update(deltaTime);
+	Collectible::Update(DeltaTime);
 }

@@ -4,29 +4,35 @@
 
 using namespace std;
 
-//forward declare game to avoid circular dependencies
+
 class Game;
+
 
 class Input
 {
 public:
-	Input(Game* myGame);
+	Input(Game* MyGame);
+
+
 	~Input();
+	void UpdateInput(bool& bIsGameOver, vector<SDL_Window*> SdlWindows);
 
-	void updateInput(bool& bIsGameOver, vector<SDL_Window*> sdlWindows);
+	// it will detect wether the that specific key is up or down 
 
-	//detect if a particular key is up or down
-	bool isKeyDown(SDL_Scancode key);
-	bool isKeyUp(SDL_Scancode key);
+	bool IsKeyDown(SDL_Scancode  Key);
+	bool IsKeyUp(SDL_Scancode  Key);
+
 
 protected:
-	void handleMenuEvents(SDL_Event* aEvent, vector<SDL_Window*> sdlWindows, bool &bIsGameOver);
+	void HandleMenuEvents(SDL_Event* Event, vector<SDL_Window*> SdlWindows, bool  &bIsGameOver);
+
 
 private:
-	//store the state of each key
-	const Uint8* keyboardState;
-	
-	//store game class
-	Game* myGame;
+	// store the state of each key 
+
+	const Uint8* KeyBoardState;
+
+	Game* MyGame;
+
 };
 

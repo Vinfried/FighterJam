@@ -1,64 +1,92 @@
+
+
+#include<iostream>
 #include "Character.h"
 #include "SDL.h"
-#include <iostream>
 #include "Vector2.h"
 
 using namespace std;
 
-Character::Character(Texture* characterTexture, Vector2 pos, int numberOfFrames)
+
+Character::Character(Texture *CharacterTexture, Vector2 Pos,   int NumberofFrames)
 {
-	position = pos;
-	objectCenter = position;
-	objectTexture = characterTexture;
-	this->numberOfFrames = numberOfFrames;
-	velocity = Vector2().zero();
-	movementAxis = Vector2().zero();
-	maxSpeed = 100.0f;
+	Position = Pos;
+	ObjectCenter = Position;
+
+	ObjectTexture = CharacterTexture;
+	this->NumberOfFrames = NumberofFrames;
+	Velocity = Vector2().Zero();
+	MovementAxis = Vector2().Zero();
+	MaxSpeed = 100.0f;
+	Drag = 0.90f;
 	float w = 10.0f;
 	float h = 10.0f;
 
-	//if we have a texture then update the width and height based on the texture
-	if (objectTexture != nullptr) {
-		w = objectTexture->getImageWidth() / SDL_max(1, numberOfFrames);
-		h = objectTexture->getImageHeight();
 
+	if (ObjectTexture != nullptr)
+	{
+		w = ObjectTexture->GetImageWidth() / SDL_max(1, NumberofFrames);
+		h = ObjectTexture->GetImageHeight();
+		
 		w /= 2;
 		h /= 2;
 	}
-	setCollision(objectCenter, Vector2(w, h));
+
+
+	SetCollision(ObjectCenter, Vector2(w,h));
+
+
 }
 
-void Character::draw(SDL_Renderer* renderer)
+ 
+void Character::Draw(SDL_Renderer* Renderer)
 {
-	GameObject::draw(renderer);
+	GameObject::Draw(Renderer);
 
-	SDL_Rect clip;
-	clip.x = 0;
-	clip.y = 0;
-	clip.h = objectTexture->getImageHeight();
-	clip.w = objectTexture->getImageWidth() / SDL_max(1, numberOfFrames);
+	SDL_Rect Clip;
+	Clip.x = 0;
+	Clip.y = 0;
+	Clip.h = ObjectTexture->GetImageHeight();
+	Clip.w = ObjectTexture->GetImageWidth() / SDL_max(1, NumberOfFrames);
 
-	objectTexture->draw(renderer, position, &clip);
+
+	ObjectTexture->Draw(Renderer, Position, &Clip);
+
 }
 
-void Character::update(float deltaTime)
+void Character::Update(float DeltaTime)
 {
-	//this will make sure the gameobject update code runs first
-	GameObject::update(deltaTime);
-	//set the velocity to be our movement axis normalised * our speed
-	velocity = movementAxis * maxSpeed;
-	//move the character based on velocity
-	position += velocity * deltaTime;
+	// this will make sure that the gameobject code runs first 
+
+	GameObject::Update(DeltaTime);
+
+	Velocity += Acceleration * DeltaTime;
+
+	if(Velocity.Length() > MaxSpeed)
+	{
+		Velocity = Velocity.Normalised() * MaxSpeed;
+	}
+
+	Position += Velocity * DeltaTime;
+	Acceleration = Vector2().Zero();
+	Velocity *= Drag;
+
 }
 
-void Character::setMovementAxis(Vector2 axis)
+void Character::AddForce(float Force, Vector2 Direction)
 {
-	movementAxis = axis;
-}
 
-Vector2 Character::getMovementAxis()
+	Acceleration += Direction.Normalised() * Force;
+}
+ 
+
+void Character::SetMovementAxis(Vector2 Axis)
 {
-	return movementAxis;
+
+	MovementAxis = Axis;
 }
 
-
+Vector2 Character::GetMovementAxis()
+{
+	return MovementAxis;
+}

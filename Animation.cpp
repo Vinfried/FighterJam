@@ -1,67 +1,88 @@
-#include <iostream>
+
+#include "iostream"
 #include "Animation.h"
+
 
 using namespace std;
 
-Animation::Animation()
-{
-}
+//Animation::Animation()
+//{
 
-Animation::Animation(Texture* inSpriteSheet, int inNumberOfFrames,
-	float inFrameDuration, int inStartFrame, int inEndFrame)
+//}
+Animation::Animation(Texture* intSpriteSheet, int InNumberofFrames , float InFrameDuration,
+	        int InStartFrame, int InEndFrame )
 {
-	//set default values
-	spriteSheet = inSpriteSheet;
-	startFrame = inStartFrame;
-	endFrame = inEndFrame;
-	frameDuration = inFrameDuration;
-	frameTimer = 0.0f;
-	currentFrame = startFrame;
 
-	if (spriteSheet != nullptr) {
-		frameWidth = spriteSheet->getImageWidth() / SDL_max(1, inNumberOfFrames);
-		frameHeight = spriteSheet->getImageHeight();
+	SpriteSheet = intSpriteSheet;
+	StartFrame = InStartFrame;
+	EndFrame = InEndFrame;
+	FrameDuration = InFrameDuration;
+	FrameTimer = 0.0f;
+	CurrentFrame = StartFrame;
+
+	// width and height of each fram of image
+	if (SpriteSheet != nullptr) 
+	{
+		FrameWidth = SpriteSheet->GetImageWidth() / SDL_max(1, InNumberofFrames);
+		FrameHeight = SpriteSheet->GetImageHeight();
 	}
+	else
+	{
+		cout << "No Texture Provided in the Animation - Failed!!" << endl;
+	}
+
+
+
 }
+
 
 Animation::~Animation()
 {
-	if (spriteSheet != nullptr) {
-		//deallocate the sprite sheet object
-		delete spriteSheet;
-		spriteSheet = nullptr;
+	if (SpriteSheet !=  nullptr)
+	{
+		// this will deallocate the sprite sheet 
+		delete SpriteSheet;
+		SpriteSheet = nullptr;
 	}
-	else {
-		cout << "Error - No texture found in animation." << endl;
-	}
+
 }
-
-void Animation::update(float deltaTime)
+ 
+void Animation::Update(float DeltaTime)
 {
-	//update the timer each frame
-	frameTimer += deltaTime;
 
-	//if the frame timer has passed the frame duration
-	if (frameTimer >= frameDuration) {
-		currentFrame++;
+	FrameTimer += DeltaTime;
+	if (FrameTimer>= FrameDuration)
+	{
+		CurrentFrame++;
 
-		frameTimer = 0.0f;
+		FrameTimer = 0.0f;
 
-		if (currentFrame >= endFrame) {
-			currentFrame = startFrame;
+		if (CurrentFrame >= EndFrame)
+		{
+
+			CurrentFrame = StartFrame;
 		}
 	}
+
+
+
+
+
 }
 
-void Animation::draw(SDL_Renderer* renderer, Vector2 pos, int scale, bool flip)
+void Animation::Draw(SDL_Renderer* Renderer, Vector2 Pos , int Scale )
 {
-	//get the current rendering frame clipping region
+	// get the current rendering 
 	SDL_Rect clip;
-	clip.x = currentFrame * frameWidth;
+	clip.x = CurrentFrame * FrameWidth;
 	clip.y = 0;
-	clip.w = frameWidth;
-	clip.h = frameHeight;
+	clip.w = FrameWidth;
+	clip.h = FrameHeight;
 
-	//draw to the screen
-	spriteSheet->draw(renderer, pos, &clip, scale, flip);
+	// draw the rendering to the screen 
+
+	SpriteSheet->Draw(Renderer,Pos,&clip, Scale);
+
 }
+
+

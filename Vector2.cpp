@@ -1,8 +1,11 @@
 #include "Vector2.h"
 #include <math.h>
 
+
 Vector2::Vector2()
 {
+	Vector2::x = 0;
+	Vector2::y = 0;
 
 }
 
@@ -16,141 +19,169 @@ Vector2::Vector2(float x, float y)
 
 Vector2::~Vector2()
 {
+
+
 }
 
-//gives new Vector2
-Vector2 Vector2::operator+(const Vector2& otherVector)
+Vector2 Vector2::operator+(const Vector2& OtherVector)
 {
-	return Vector2(this->x + otherVector.x, this->y + otherVector.y);
+
+	return Vector2(this->x + OtherVector.x, this->y + OtherVector.y);
 }
 
-//increments on existing Vector2
-Vector2 Vector2::operator+=(const Vector2& otherVector)
+Vector2 Vector2::operator+=(const Vector2& OtherVector)
 {
-	//increase the x and y values by the other vectors values
-	this->x += otherVector.x;
-	this->y += otherVector.y;
+	// increament the X and Y values by adding values of other vectors 
+	this->x += OtherVector.x;
+	this->y += OtherVector.y;
+
 
 	return *this;
 }
 
-Vector2 Vector2::operator-(const Vector2& otherVector)
+Vector2 Vector2::operator-(const Vector2& OtherVector)
 {
-	return Vector2(this->x - otherVector.x, this->y - otherVector.y);
+
+
+	return Vector2(this->x - OtherVector.x, this->y - OtherVector.y);
 }
 
-
-Vector2 Vector2::operator-=(const Vector2& otherVector)
+Vector2 Vector2::operator-=(const Vector2& OtherVector)
 {
-	//decrement the x and y values by other vector values
-	this->x -= otherVector.x;
-	this->y -= otherVector.y;
+	// this will decreament the value of vectore X and Y 
+	this->x -= OtherVector.x;
+	this->y -= OtherVector.y;
+
+	return  *this;
+}
+
+Vector2 Vector2::operator*(const float& Scalar)
+{
+
+
+	return Vector2(this->x * Scalar, this->y * Scalar);
+}
+
+Vector2 Vector2::operator*=(const float& Scalar)
+{
+	//multiply the scalar value  
+
+	this->x *= Scalar;
+	this->y *= Scalar;
+
+
 	return *this;
 }
 
-Vector2 Vector2::operator*(const float& scalar)
+Vector2 Vector2::operator/(const float& Scalar)
 {
-	return Vector2(this->x * scalar, this->y * scalar);
-}
 
-Vector2 Vector2::operator*=(const float& scalar)
-{
-	//multiply the x and y values by the scalar value to multiply the vector uniformly
-	this->x *= scalar;
-	this->y *= scalar;
+	Vector2 DividedVector = Vector2(this->x, this->y);
 
-	return *this;
-}
+	// is the scalar 0 
+	if (Scalar != 0 )
+	{
+		// is the current x value zero 
 
-Vector2 Vector2::operator/(const float& scalar)
-{
-	Vector2 dividedVector = Vector2(this->x, this->y);
-
-	//is the scalar 0
-	if (scalar != 0) {
-		
-		//is the current x value 0
-		if (this->x != 0) {
-			dividedVector.x / scalar;	
+		if (this->x !=0)
+		{
+			DividedVector.x /= Scalar;
 		}
 
-		//is the current y value 0
-		if (this->y != 0) {
-			dividedVector.y /= scalar;
-		}
-	}
-
-	return dividedVector;
-}
-
-Vector2 Vector2::operator/=(const float& scalar)
-{
-	//is the scalar 0
-	if (scalar != 0) {
-
-		//is the current x value 0
-		if (this->x != 0) {
-			this->x / scalar;
-		}
-
-		//is the current y value 0
-		if (this->y != 0) {
-			this->y /= scalar;
+		// is the current y value zero 
+		if (this->y != 0)
+		{
+			DividedVector.y /= Scalar;
 		}
 	}
 
+
+	return Vector2();
+}
+
+Vector2 Vector2::operator/=(const float& Scalar)
+{
+	if (Scalar != 0)
+	{
+		// is the current x value zero 
+
+		if (this->x != 0)
+		{	 
+			this->x /= Scalar;
+		}
+
+		// is the current y value zero 
+
+		if (this->y != 0)
+		{		 
+			this->y /= Scalar;
+
+		}
+	}
+
+
 	return *this;
 }
 
-bool Vector2::operator==(const Vector2& otherVector)
+bool Vector2::operator==(const Vector2& OtherVector)
 {
-	bool matchX = this->x == otherVector.x;
-	bool matchY = this->y == otherVector.y;
-	
-	//return true only of both matchX and matchy are true, otherwise return false
-	return matchX && matchY;
+	bool MatchX = this->x == OtherVector.x;
+	bool MatchY = this->y == OtherVector.y;
+
+
+
+	return MatchX && MatchY;
 }
 
-bool Vector2::operator!=(const Vector2& otherVector)
+bool Vector2::operator!=(const Vector2& OtherVector)
 {
-	bool matchX = this->x != otherVector.x;
-	bool matchY = this->y != otherVector.y;
 
-	//return true only of both matchX and matchy are false, otherwise return true
-	return matchX && matchY;
+	bool MatchX = this->x != OtherVector.x;
+	bool MatchY = this->y != OtherVector.y;
+
+
+	return MatchX && MatchY;
 }
 
-float Vector2::length()
+float Vector2::Length()
 {
+
+
 	return sqrtf(x*x + y*y);
+
 }
 
-void Vector2::normalise()
+void Vector2::Normalise()
 {
-	if (length() != 0) {
-		this->x /= length();
-		this->y /= length();
-	}
 
-	else {
+	if (Length() != 0)
+	{
+		this->x /= Length();
+		this->y /= Length();
+
+	}
+	else
+	{
 		this->x = 0;
 		this->y = 0;
 	}
 }
 
-Vector2 Vector2::normalised()
+Vector2 Vector2::Normalised()
 {
-	Vector2 result = Vector2(0, 0);
+	Vector2 Result = Vector2(0, 0);
 
-	if (length() != 0) {
-		result.x = this->x / length();
-		result.y = this->y / length();
+	if (Length() != 0)
+	{
+		Result.x = this->x / Length();
+		Result.y = this->y / Length();
+
 	}
-
-	return result;
+ 
+	return Result;
 }
 
-Vector2 Vector2::zero()
+Vector2 Vector2::Zero()
 {
-	return Vector2(0, 0);
+	return Vector2(0,0);
 }

@@ -4,9 +4,9 @@ class Orbs :
     public Collectible
 {
 public:
-    Orbs(Texture* collectibleTexture, Vector2 pos, int numberOfFrames = 1);
+    Orbs(Texture* CollectibleTexture, Vector2 Pos, int NumberOfFrames = 1);
     ~Orbs();
 
-    void update(float deltaTime) override;
+    void Update(float DeltaTime) override;
 };
 

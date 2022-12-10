@@ -1,88 +1,86 @@
-#include <iostream>
 #include "Texture.h"
 #include "SDL_image.h"
-
+#include <iostream>
 using namespace std;
+
 
 Texture::Texture()
 {
-	//set default texture to nullptr
-	sdlTexture = nullptr;
-	//set the width and height to 0
-	width = 0;
-	height = 0;
+	 SdlTexture = nullptr;
+	 Width = 0;
+	 Height = 0;
 }
 
 Texture::~Texture()
 {
-	resetTexture();
+	ResetTexture();
 }
 
-bool Texture::loadImageFromFile(const char* path, SDL_Renderer* renderer)
+
+bool Texture::LoadImageFromFile(const char* path, SDL_Renderer* renderer)
 {
-	if (sdlTexture == nullptr) {
-		//Load the image to the surface
-		SDL_Surface* loadSurface = IMG_Load(path);
+	if (SdlTexture==nullptr)
+	{
+		SDL_Surface* LoadSurface = IMG_Load(path);
+		if (LoadSurface != nullptr)
+		{
+			cout << "Load Texture Sucess " << endl;
 
-		if (loadSurface != nullptr) {
-			cout << "Load Texture - success" << endl;
 
-			//create the texture from the surface
-			sdlTexture = SDL_CreateTextureFromSurface(renderer, loadSurface);
+			SdlTexture = SDL_CreateTextureFromSurface(renderer, LoadSurface);
+			if (SdlTexture !=nullptr)
+			{
+				cout << "Creat texture from surface success " << endl;
 
-			if (sdlTexture != nullptr) {
-				cout << "Create texture from surface - success" << endl;
+				Width = LoadSurface->w;
+				Height = LoadSurface->h;
 
-				//get the dimensions of the image
-				width = loadSurface->w;
-				height = loadSurface->h;
 			}
-			else {
-				cout << "Create texture from surface - failed" << endl;
+			else 
+			{
+				cout << "Creat texture from surface failed ! " << endl;
+
 			}
 
-			SDL_FreeSurface(loadSurface);
+			SDL_FreeSurface(LoadSurface);
 		}
-		else {
-			cout << "Load Texture - failed" << SDL_GetError() << endl;
+		else
+		{
+			cout << "Load Texture Failed :"<< SDL_GetError() << endl;
 		}
+		  
 	}
-	else {
-		cout << "Remove the existing texture before loading..." << endl;
-		
+	else
+	{
+		cout << "Remove the existing texture before loading ! " << endl;
 		return false;
 	}
-	//id sdlTexture != nullptr return true, otherwise false
-	return sdlTexture != nullptr;
+
+	return SdlTexture != nullptr;
+
 }
 
-void Texture::draw(SDL_Renderer* renderer, Vector2 pos, SDL_Rect* sourceRect, int scale, bool flip)
+void Texture::Draw(SDL_Renderer* Renderer,Vector2 Pos , SDL_Rect* SourceRect, int Scale )
 {
-	SDL_Rect destinationRect = {pos.x, pos.y, width, height };
+	SDL_Rect DestnationRect = { Pos.x,Pos.y,Width,Height};
 
-	//clip/crop img if we have source rect
-	if (sourceRect != nullptr) {
-		destinationRect.w = sourceRect->w * scale;
-		destinationRect.h = sourceRect->h * scale;
+	if (SourceRect != nullptr)
+	{
+		DestnationRect.w = SourceRect->w * Scale;
+		DestnationRect.h = SourceRect->h * Scale;
 	}
 
-	SDL_RendererFlip flipflag = SDL_FLIP_NONE;
-
-	if (flip) {
-		flipflag = SDL_FLIP_HORIZONTAL;
-	}
-
-	//render to the screen
-	SDL_RenderCopyEx(renderer, sdlTexture, sourceRect, &destinationRect, 0, 0, flipflag);
+	SDL_RenderCopy(Renderer, SdlTexture, SourceRect, &DestnationRect );
 }
 
-void Texture::resetTexture()
+void Texture::ResetTexture()
 {
-	//deallocate texture
-	if (sdlTexture != nullptr) {
-		SDL_DestroyTexture(sdlTexture);
-		sdlTexture = nullptr;
-		width = 0;
-		height = 0;
+	if (SdlTexture != nullptr)
+	{
+		SDL_DestroyTexture(SdlTexture);
+		SdlTexture = nullptr;
+		Width = 0;
+		Height = 0;
 	}
+
 }

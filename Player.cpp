@@ -1,66 +1,104 @@
 #include "Player.h"
 #include "SDL.h"
+#include "Game.h"
+#include "Texture.h"
+ 
+ 
+ 
 
-Player::Player(Texture* characterTexture, Vector2 pos, int numberOfFrames)
-	:Character::Character(characterTexture, pos, numberOfFrames)
+Player::Player(Texture* CharacterTexture, Vector2 Pos, int NumberofFrames)
+ :Character::Character(CharacterTexture,Pos, NumberofFrames)
 {
-	tag = "Player";
+	Tag = "Player";
+	MaxSpeed = 500.0f;
+ 
 }
 
 Player::~Player()
 {
 }
 
-void Player::update(float deltaTime)
+void Player::Update(float DeltaTime)
 {
-	Character::update(deltaTime);
+	Character::Update(DeltaTime);
 }
-
-void Player::processInput(Input *userInput)
+// we tried to over ride this metho to increase the player size 
+/* void Draw(SDL_Renderer* Renderer)
 {
-	float movementX = 0.0f;
-	float movementY = 0.0f;
+	GameObject::Draw(Renderer);
 
-	if (userInput->isKeyDown(SDL_SCANCODE_W)) {
-		movementY = -1.0f;
+	SDL_Rect Clip;
+	Clip.x = 0;
+	Clip.y = 0;
+	Clip.h = ObjectTexture->GetImageHeight();
+	Clip.w = ObjectTexture->GetImageWidth() / SDL_max(1, NumberofFrames);
+
+
+	ObjectTexture->Draw(Renderer, Position, &Clip, 1.6);
+}*/
+
+void Player::ProcessInput(Input* UserInput)
+{
+	float MovementX = 0.0f;
+	float MovementY = 0.0f;
+	float Speed = 2000.0f;
+
+	if (UserInput->IsKeyDown(SDL_SCANCODE_W))
+	{
+		MovementY = -1.0f;
+	}
+	if (UserInput->IsKeyDown(SDL_SCANCODE_S))
+	{
+		MovementY = 1.0f;
 	}
 
-	if (userInput->isKeyDown(SDL_SCANCODE_S)) {
-		movementY = 1.0f;
+	if (UserInput->IsKeyDown(SDL_SCANCODE_A))
+	{
+		MovementX = -1.0f;
 	}
 
-	if (userInput->isKeyDown(SDL_SCANCODE_A)) {
-		movementX = -1.0f;
-	}
-	
-	if (userInput->isKeyDown(SDL_SCANCODE_D)) {
-		movementX = 1.0f;
+	if (UserInput->IsKeyDown(SDL_SCANCODE_D))
+	{
+		MovementX = 1.0f;
 	}
 
-	//store the colliders overlapping our collider
-	vector<Collider*> otherColliders = getCollisions()[0]->getOverlappingColliders();
 
-	if (userInput->isKeyDown(SDL_SCANCODE_SPACE)) {
-		
-		//run through all the colliders we're overlapping
-		for (unsigned int i = 0; i < otherColliders.size(); ++i) {
-			if (otherColliders[i]->getOwner()->tag == "Enemy") {
-				SDL_Log("Collider detected, Enemy: Ouch!");
-				otherColliders[i]->getOwner()->destroyGameObject();
+	AddForce(Speed, Vector2(MovementX, MovementY));
+
+
+
+	// store the colliders overlapping over colliders 
+
+	vector<Collider*> OtherColiders = GetCollisions()[0]->GetOverlappingColliders();
+
+	if (UserInput->IsKeyDown(SDL_SCANCODE_SPACE))
+	{
+ 		for ( unsigned int i = 0 ; i <OtherColiders.size(); ++i)
+		{
+			if (OtherColiders[i]->GetOwner()->Tag == "Enemy")
+			{
+
+				 
+
+				OtherColiders[i]->GetOwner()->DestroyGameObject();
+
 			}
-			
+
+ 		}
+
+ 	}
+
+
+	for ( vector<Collider*>::iterator it = OtherColiders.begin(); it < OtherColiders.end(); ++it)
+	{
+		if ((*it)->GetOwner()->Tag =="Enemy")
+		{
+			Game::GetGameInstance()->Score += 100;
+			(*it)->GetOwner()->DestroyGameObject();
 		}
 	}
 
-	//this will run through all the colliders overlapping each frame
-	for (vector<Collider*>::iterator it = otherColliders.begin(); it < otherColliders.end(); ++it) {
-		if ((*it)->getOwner()->tag == "Orb") {
-			SDL_Log("Orb collected");
-			(*it)->getOwner()->destroyGameObject();
-		}
-	}
 
-	setMovementAxis(Vector2(movementX, movementY));
+  
+
 }
-
-

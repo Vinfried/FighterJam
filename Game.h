@@ -1,80 +1,83 @@
 #pragma once
 
-//setup SDL
 #include <SDL.h>
 #include "Texture.h"
 #include "Animation.h"
-#include "GameObject.h"
-#include "Character.h"
-#include "Input.h"
-#include "Collider.h"
-#include "GameState.h"
+#include"Character.h"
+#include"GameObject.h"
 #include <iostream>
 #include <vector>
+#include"Input.h"
+#include "Collider.h"
+#include "GameState.h"
 
 using namespace std;
 
+static Game* GameInstance;
+ 
 class Game
 {
+
 public:
-	//constructor
-	Game();
-	//deconstructor
-	~Game();
+
+	  static Game* GetGameInstance();
+
+	  static void DestroyGameInstance();
+
+	  int Score;
 
 private:
-	//window for rendering
-	vector<SDL_Window*> sdlWindow; 
-	//2D Renderer
-	vector<SDL_Renderer*> sdlRenderer;
-	//flag for the game loop
+
+	Game();
+
+
+	~Game();
+
+	// the window that will be rendering 
+	vector<SDL_Window*> SdlWindow;
+
+	// 2D renderer 
+	vector < SDL_Renderer*> SdlRenderer;
+
 	bool bIsGameOver;
 
-	//this will store our game states
-	vector<GameState*> gameStates;
+	vector <GameState*> GameStates;
+ 
+	// this will initialize the sub game objects 
 
-	//initialise all the game sub objects
-	vector<GameObject*> subGameObjects;
+	vector<GameObject*> SubGameObjects;
 
-	Input* userInput;
+	 
 
-	//how long since last update
-	unsigned int lastUpdatedTime;
+
+	Input*  UserInput;
+
+	unsigned int LastUpdateTime;
 
 public:
-	//add a random rectangle to the secondary window
-	void addRandomRectangle(bool bFilled);
 
-	//create the renderer
-	//allocate any objects we want
+	void ChangeGameState(GameState* NewState, Uint32  StateID);
 
-	bool Start();
+	// add random ractangle to the screen 
 
-	//handle inputs from player
+	void AddRandomRactangle(bool  bFilled = false);
+
+	// Create the renderer 
+	bool start();  // allocates any objects just like begin
+
 	void ProcessInput();
 
+	void Update();   
 
-	//run on every tick
-	void Update();
-	
-	//draw the game images to screen
-	void Draw();
+	void Draw(); //it will draw game images on screen 
 
-	//run a function that will handle deleting objects AFTER or BEFORE all functionality is complete
+	// run a function that will handle deleting objects after or before all the functionality is complete 
 	void HandleGarbage();
 
+	void Run(const char* title, int width, int height, bool fullScreen);
+	 
+	void ShutDown();  // deaclocating the objects 
 
-	//Create game window and run
-	//@ param 1 - title for the window
-	//@ param 2 - width for the window
-	//@ param 3 - height for the window
-	//@ param 4 - if we are fullscreen or not
-	void Run(const char* title, int width, int height, bool fullscreen);
-
-	//dealocate objects from memory
-	void Shutdown();
-
-	//Shutdown SDL framework & delete renderer from memory
 	void Destroy();
 };
 

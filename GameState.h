@@ -1,8 +1,7 @@
 #pragma once
-
 #include "SDL.h"
-#include "Input.h"
-#include "GameObject.h"
+#include"Input.h"
+#include"GameObject.h"
 
 class GameState
 {
@@ -10,25 +9,36 @@ public:
 	GameState();
 	~GameState();
 
-	//the game states version of all of the loop functions
-	virtual void update(float deltaTime);
-	virtual void draw(SDL_Renderer* renderer);
-	virtual void processInput(Input* userInput);
-	virtual void handleGarbage();
+	virtual void Update(float DeltaTime);
+	virtual void Draw(SDL_Renderer* Renderer);
+	virtual void ProcessInput(Input* UserInput);
+	virtual void HandleGarbage();
 
-	//will be called when the game state begins and ends
-	virtual bool onEnter(SDL_Renderer* renderer, SDL_Window* window) { return true; }
-	virtual bool onExit() { return true; }
 
-	//way to identify the state
-	Uint32 stateID;
+	virtual bool OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
+	{
+		return true;
+	}
 
-	//the default background colour of the state
-	SDL_Colour defaultBackgroundColour;
+	virtual bool OnExit()
+	{
+		return true;
+	}
+
+	// this id will help to identify the state 
+	Uint32  StateID;
+
+	SDL_Colour DBColour;
+
+	bool ShouldDelete();
+
+	void DestroyGameState();
+
 
 protected:
-	//this will store all the game objects in the state
-	vector<GameObject*> gameObjectStack;
 
+	vector<GameObject*>GameObjectStack;
+
+	bool bShouldDelete;
 };
 

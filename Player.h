@@ -1,13 +1,19 @@
 #pragma once
 #include "Character.h"
-class Player :
-    public Character
+#include "Vector2.h"
+#include "SDL_mixer.h"
+
+
+class Player : public Character
 {
 public:
-    Player(Texture* characterTexture, Vector2 pos, int numberOfFrames = 1);
-    ~Player();
 
-    void update(float deltaTime) override;
-    virtual void processInput(Input *userInput) override;
+	Player(Texture* CharacterTexture, Vector2 Pos, int NumberofFrames = 1);
+	~Player();
+
+
+	void Update(float DeltaTime)override;
+	void ProcessInput(Input* UserInput)override;
+	//void Draw(SDL_Renderer* Renderer)override;
 };
 

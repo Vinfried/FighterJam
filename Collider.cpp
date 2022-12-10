@@ -3,90 +3,128 @@
 
 using namespace std;
 
-Collider::Collider(GameObject* ownerObject, Vector2 position, Vector2 halfDimentions, bool shouldDebug)
+Collider::Collider(GameObject* OwnerObject, Vector2 Position, Vector2 HalfDimensions, bool ShouldDebug)
 {
-	bDebug = shouldDebug;
-	overlappedColliders = {};
-	this->ownerObject = ownerObject;
 
-	float x = position.x - halfDimentions.x;
-	float y = position.y - halfDimentions.y;
-	float w = halfDimentions.x * 2;
-	float h = halfDimentions.y * 2;
+	bDebug = ShouldDebug;
+	OverlappedColliders = {};
+	this->OwnerObject = OwnerObject;
+ 
 
-	//set the bounds based on the above algorithms
-	colliderRect = { x, y, w, h };
+	// get the position and adjust the size of the colliders 
+
+	float x = Position.x - HalfDimensions.x;
+	float y = Position.y - HalfDimensions.y;
+
+	// set the width and height of rect to full size 
+
+	float w = HalfDimensions.x * 2;
+	float h = HalfDimensions.y * 2;
+
+	// set the bounds based on the algorithum 
+
+	ColliderRect = {x,y,w,h};
+
+
 }
 
 Collider::~Collider()
 {
-	//looping through all of the colliders is overlapped with 
-	for (vector<Collider*>::iterator col = overlappedColliders.begin(); col < overlappedColliders.end(); ++col) {
-		//make sure the collider is in the other collider overlapped
-		vector<Collider*>::iterator fCol = find((*col)->overlappedColliders.begin(), (*col)->overlappedColliders.end(), this);
-		//if it's found then remove it from the colliders overlap
-		if (fCol < (*col)->overlappedColliders.end()) {
-			(*col)->overlappedColliders.erase(fCol);
+	for ( vector <Collider*>::iterator Col = OverlappedColliders.begin(); Col < OverlappedColliders.end(); ++Col)
+	{
+ 
+		vector <Collider*>::iterator fCol = find((*Col)->OverlappedColliders.begin(), (*Col)->OverlappedColliders.end(),this);
+
+		if (fCol < (*Col)->OverlappedColliders.end())
+		{
+			(*Col)->OverlappedColliders.erase(fCol);
 		}
 	}
+
+
+
+
 }
 
-void Collider::update(float deltaTime, vector<Collider*>& otherColliders)
+void Collider::Update(float DeltaTime, vector<Collider*>& OtherColliders)
 {
-	//chcke if this collider is intersecting with other colliders in the game
-	for (unsigned int i = 0; i < otherColliders.size(); ++i) {
-		//make sure othercollider isn't our collider
-		if (otherColliders[i] != this) {
-			//detect if this collider is intersecting with any other colliders
-			//SDL_HasIntersection will be true if the colliders intersect or false if they don't
-			if (SDL_HasIntersectionF(&colliderRect, &otherColliders[i]->colliderRect)) {
-				//looking through the overlapped colliders array to detect if this collider is in there
-				//this will pass an iteration number less than the end() if it's in the array
-				vector<Collider*>::iterator it = find(overlappedColliders.begin(), overlappedColliders.end(), otherColliders[i]);
-				if (it == overlappedColliders.end()) {
-					overlappedColliders.push_back(otherColliders[i]);
-					SDL_Log("Entered Collider");
+ 
+	for ( unsigned int i = 0; i< OtherColliders.size(); ++i)
+	{
+		if (OtherColliders[i] != this)
+		{
+			if (SDL_HasIntersectionF(&ColliderRect, &OtherColliders[i]->ColliderRect))
+			{
+				vector<Collider*>::iterator it = find(OverlappedColliders.begin(), OverlappedColliders.end(), OtherColliders[i]);
+				if (it == OverlappedColliders.end())
+				{
+					OverlappedColliders.push_back(OtherColliders[i]);
+				     //	SDL_Log("Entered Collider");
 				}
 			}
-			else {
-				//check if the other collider is in the overlapped array
-				vector<Collider*>::iterator it = find(overlappedColliders.begin(), overlappedColliders.end(), otherColliders[i]);
-				//if it is then remove it from the array
-				if (it < overlappedColliders.end()) {
-					overlappedColliders.erase(it);
-					//SDL_Log("Exited Collider");
+
+			else
+			{
+				vector<Collider*>::iterator it = find(OverlappedColliders.begin(), OverlappedColliders.end(), OtherColliders[i]);
+				if (it < OverlappedColliders.end())
+				{
+					OverlappedColliders.erase(it);
+
+				      //	SDL_Log("Entered Collider");
 				}
+
 			}
 		}
-	}
-}
 
-void Collider::draw(SDL_Renderer* renderer)
-{
-	if(bDebug == true) {
-		//is the overlapped colliders empty?
-		if (overlappedColliders.empty()) {
-			//set sdl draw colour to red
-			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-		}
-		else {
-			//set sdl draw colour to green
-			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
-		}
 
-		//draw the red colour as a rectangle based on our collider dimentions
-		SDL_RenderDrawRectF(renderer, &colliderRect);
+
+
 
 	}
+
+
+
+
+
+
 }
 
-vector<Collider*> Collider::getOverlappingColliders() const
+void Collider::Draw(SDL_Renderer* Renderer)
 {
 
-	return overlappedColliders;
+
+	if (bDebug == true)
+	{
+		if (OverlappedColliders.empty())
+		{
+			SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 1);
+		}
+		else
+		{
+
+			SDL_SetRenderDrawColor(Renderer, 0, 255, 0, 1);
+
+		}
+
+		// draw the red color as rectangule based on the collider dimension 
+
+		SDL_RenderDrawRectF(Renderer, &ColliderRect);
+	}
+
+	
+
 }
 
-GameObject* Collider::getOwner() const
+vector<Collider*> Collider::GetOverlappingColliders() const
 {
-	return ownerObject;
+
+
+	return OverlappedColliders;
 }
+
+GameObject* Collider::GetOwner() const
+{
+	return OwnerObject;
+}
+
+ 
