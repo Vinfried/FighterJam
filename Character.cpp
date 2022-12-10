@@ -8,13 +8,13 @@
 using namespace std;
 
 
-Character::Character(Texture *CharacterTexture, Vector2 Pos,   int NumberofFrames)
+Character::Character(Texture *CharacterTexture, Vector2 Pos, int NumberOfFrames)
 {
 	Position = Pos;
 	ObjectCenter = Position;
 
 	ObjectTexture = CharacterTexture;
-	this->NumberOfFrames = NumberofFrames;
+	this->NumberOfFrames = NumberOfFrames;
 	Velocity = Vector2().Zero();
 	MovementAxis = Vector2().Zero();
 	MaxSpeed = 100.0f;
@@ -25,7 +25,7 @@ Character::Character(Texture *CharacterTexture, Vector2 Pos,   int NumberofFrame
 
 	if (ObjectTexture != nullptr)
 	{
-		w = ObjectTexture->GetImageWidth() / SDL_max(1, NumberofFrames);
+		w = ObjectTexture->GetImageWidth() / SDL_max(1, NumberOfFrames);
 		h = ObjectTexture->GetImageHeight();
 		
 		w /= 2;

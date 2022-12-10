@@ -17,7 +17,7 @@ public:
 	void Update(float DeltaTime);
 
 	// it will draw the animation on screen 
-	void Draw(SDL_Renderer* Renderer, Vector2 Pos, int Scale = 1);
+	void Draw(SDL_Renderer* Renderer, Vector2 Pos, int Scale = 1, bool Flip = false);
 
 	int GetFrameWidth()
 	{
@@ -43,6 +43,6 @@ private:
 
 	float FrameDuration;
 
-	unsigned  int CurrentFrame;
+	unsigned int CurrentFrame;
 };
 

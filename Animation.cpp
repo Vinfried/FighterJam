@@ -70,7 +70,7 @@ void Animation::Update(float DeltaTime)
 
 }
 
-void Animation::Draw(SDL_Renderer* Renderer, Vector2 Pos , int Scale )
+void Animation::Draw(SDL_Renderer* Renderer, Vector2 Pos , int Scale, bool Flip)
 {
 	// get the current rendering 
 	SDL_Rect clip;

@@ -2,6 +2,15 @@
 #include "GameObject.h"
 #include "SDL.h"
 #include "Vector2.h"
+#include "Animation.h"
+
+struct CharacterAnimations {
+    Animation* attack;
+    Animation* idle;
+    Animation* run;
+    Animation* die;
+    Animation* jump;
+};
 
 class Character :
     public GameObject
@@ -24,12 +33,12 @@ protected:
     void SetMovementAxis(Vector2 Axis);
     Vector2 GetMovementAxis();
     float Drag;
-
+    Vector2 Velocity;
 
 private :
 
  
-    Vector2 Velocity;
+    
 
     Vector2 MovementAxis;
 

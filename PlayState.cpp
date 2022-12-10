@@ -82,11 +82,17 @@ bool PlayState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 		Texture* PlayerTexture = new Texture;
 		// it will load the player texture
 
-		PlayerTexture->LoadImageFromFile("Assets/hero.png", Renderer);
+		PlayerTexture->LoadImageFromFile("Assets/hero_spritesheet_50x37_109.png", Renderer);
 
 		// it will construct the player as character
 
 		PChar = new Player(PlayerTexture,Vector2(0,0), 109);
+		PChar->Tag = "Player";
+
+		PChar->PlayerAnims.attack = new Animation(PlayerTexture, 109, 0.1f, 0, 2);
+		PChar->PlayerAnims.idle = new Animation(PlayerTexture, 109, 0.1f, 65, 68);
+		PChar->PlayerAnims.run = new Animation(PlayerTexture, 109, 0.1f, 84, 89);
+		
 		GameObjectStack.push_back(PChar);
 
 
@@ -98,8 +104,8 @@ bool PlayState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 
 		// it will construct the player as character
 
-		 Enemy* EnemyCharacter = new Enemy(EnemyTexture, Vector2(-10,40), 28);
-		 GameObjectStack.push_back(EnemyCharacter);
+		 Enemy* EnemyCharacter1 = new Enemy(EnemyTexture, Vector2(-100,100), 28);
+		 GameObjectStack.push_back(EnemyCharacter1);
 
 
 		EnemyTexture = new Texture;
@@ -109,7 +115,7 @@ bool PlayState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 
 		EnemyTexture->LoadImageFromFile("Assets/SPA_Enemy_Right.png", Renderer);
 
-		Enemy* EnemyCharacter2 = new Enemy(EnemyTexture, Vector2(-50, 80), 6);
+		Enemy* EnemyCharacter2 = new Enemy(EnemyTexture, Vector2(-300, 120), 6);
 		GameObjectStack.push_back(EnemyCharacter2);
 
 
@@ -120,22 +126,92 @@ bool PlayState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 
 		EnemyTexture->LoadImageFromFile("Assets/SPA_Enemy_Right.png", Renderer);
 
-		Enemy* EnemyCharacter3 = new Enemy(EnemyTexture, Vector2(-80, 120), 6);
+		Enemy* EnemyCharacter3 = new Enemy(EnemyTexture, Vector2(-400, 150), 6);
 		GameObjectStack.push_back(EnemyCharacter3);
    
+
+
+		EnemyTexture = new Texture;
+
+
+		// it will load the player texture          //SPA_Enemy_Right.png
+
+		EnemyTexture->LoadImageFromFile("Assets/SPA_Enemy_Right.png", Renderer);
+
+		Enemy* EnemyCharacter4 = new Enemy(EnemyTexture, Vector2(-800, 200), 6);
+		GameObjectStack.push_back(EnemyCharacter4);
+
+
+		EnemyTexture = new Texture;
+
+
+		// it will load the player texture          //SPA_Enemy_Right.png
+
+		EnemyTexture->LoadImageFromFile("Assets/SPA_Enemy_Right.png", Renderer);
+
+		Enemy* EnemyCharacter5 = new Enemy(EnemyTexture, Vector2(-1000, 170), 6);
+		GameObjectStack.push_back(EnemyCharacter5);
+
+        EnemyTexture = new Texture;
+
+
+		// it will load the player texture          //SPA_Enemy_Right.png
+
+		EnemyTexture->LoadImageFromFile("Assets/SPA_Enemy_Right.png", Renderer);
+
+		Enemy* EnemyCharacter6 = new Enemy(EnemyTexture, Vector2(-1200, 140), 6);
+		GameObjectStack.push_back(EnemyCharacter6);
+
+		// it will load the player texture          //SPA_Enemy_Right.png
+		EnemyTexture = new Texture;
+
+		EnemyTexture->LoadImageFromFile("Assets/fire.png", Renderer);
+
+		Enemy* fireball01 = new Enemy(EnemyTexture, Vector2(-600, 230), 10);
+		GameObjectStack.push_back(fireball01);
+
+		EnemyTexture = new Texture;
+
+		EnemyTexture->LoadImageFromFile("Assets/fire.png", Renderer);
+
+		Enemy* fireball02 = new Enemy(EnemyTexture, Vector2(-1300, 180), 10);
+		GameObjectStack.push_back(fireball02);
+
+		EnemyTexture = new Texture;
+
+		EnemyTexture->LoadImageFromFile("Assets/fire.png", Renderer);
+
+		Enemy* fireball03 = new Enemy(EnemyTexture, Vector2(-1400, 245), 5);
+		GameObjectStack.push_back(fireball03);
+
+		EnemyTexture = new Texture;
+
+		EnemyTexture->LoadImageFromFile("Assets/fire.png", Renderer);
+
+		Enemy* fireball04 = new Enemy(EnemyTexture, Vector2(-1500, 200), 5);
+		GameObjectStack.push_back(fireball04);
+
+		EnemyTexture = new Texture;
+
+		EnemyTexture->LoadImageFromFile("Assets/bossEnemy.png", Renderer);
+
+		Enemy* bossEnemy = new Enemy(EnemyTexture, Vector2(-1850, 250), 1);
+		GameObjectStack.push_back(bossEnemy);
+
+
 		Texture* EndGoalObjectTexture = new Texture;
 
 		EndGoalObjectTexture->LoadImageFromFile("Assets/Exit Pixelated.png", Renderer);
 
-		EndGoalObject* EndGoal = new EndGoalObject(EndGoalObjectTexture ,Vector2(800.0f, 600.0f));	
+		EndGoalObject* EndGoal = new EndGoalObject(EndGoalObjectTexture ,Vector2(1200.0f, 620.0f));	
 		GameObjectStack.push_back(EndGoal);
 
 
 		TXT_PPosition = new Text();
 
-		SDL_Colour TextColour = {0, 0, 255, 255};
+		SDL_Colour TextColour = {230, 230, 230, 255};
 
-		if (!TXT_PPosition->InitialiseFont(Renderer, "Assets/VT323-Regular.ttf",24, 
+		if (!TXT_PPosition->InitialiseFont(Renderer, "Assets/VT323-Regular.ttf",30, 
 			"X: 0, Y: 0",TextColour, Vector2(15.0f, 15.0f) ))
 		{
 			delete TXT_PPosition;
@@ -143,7 +219,7 @@ bool PlayState::OnEnter(SDL_Renderer* Renderer, SDL_Window* Window)
 		}
 
 		TXT_Score = new Text();
-		if (!TXT_Score->InitialiseFont(Renderer,"Assets/VT323-Regular.ttf", 24,
+		if (!TXT_Score->InitialiseFont(Renderer,"Assets/VT323-Regular.ttf", 30,
 			"Score :0",TextColour, Vector2(15.0f, 45.0f) ))
 		{
 			delete TXT_Score;
